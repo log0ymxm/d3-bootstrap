@@ -103,6 +103,7 @@
     }
 
     function show() {
+      console.log("show");
       var root = d3.select(this),
           content = title.apply(this, arguments),
           tip = root.select(".tooltip")
@@ -113,6 +114,7 @@
           outer = getPosition(root.node()),
           inner = getPosition(tip.node()),
           pos;
+        console.log(outer, inner);
 
       switch (place) {
         case "top":
@@ -156,7 +158,17 @@
 
   function getPosition(node) {
     var mode = d3.select(node).style('position');
-    if (mode === 'absolute' || mode === 'static') {
+      console.log("getPosition", mode, node, node instanceof SVGElement, node.offsetLeft);
+      console.log("---", node.getBoundingClientRect());
+    if (node instanceof SVGElement) {
+      var rect = node.getBoundingClientRect();
+      return {
+          x: rect.left,
+          y: rect.top,
+          w: rect.width,
+          h: rect.height
+      };
+    } else if (mode === 'absolute' || mode === 'static') {
       return {
         x: node.offsetLeft,
         y: node.offsetTop,
@@ -174,4 +186,3 @@
   }
 
 })(this);
-

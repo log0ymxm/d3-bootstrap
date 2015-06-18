@@ -58,6 +58,15 @@
       }
     };
 
+    popover.trigger = function(_) {
+      if (arguments.length) {
+        trigger = _;
+        return popover;
+      } else {
+        return trigger;
+      }
+    };
+
     popover.show = function(selection) {
       selection.each(show);
     };
@@ -98,6 +107,7 @@
     }
 
     function show() {
+      console.log("show");
       var root = d3.select(this),
           markup = html.apply(this, arguments),
           _content = content.apply(this, arguments),
@@ -106,6 +116,7 @@
             .classed("in", true)
             .style("display", "block"),
           head = tip.select(".popover-title").text(_title),
+          // BUG inner is redeclared and overwritten below
           inner = tip.select(".popover-content")[markup ? "html" : "text"](_content),
           place = placement.apply(this, arguments),
           outer = getPosition(root.node()),
@@ -135,6 +146,7 @@
     }
 
     function hide() {
+      console.log("hide");
       d3.select(this).select(".popover")
         .classed("in", false)
         .style("display", "none");
@@ -143,6 +155,7 @@
     }
 
     function toggle() {
+      console.log("toggle", this.popoverVisible);
       if (this.popoverVisible) {
         hide.apply(this, arguments);
       } else {
